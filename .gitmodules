@@ -1,0 +1,3 @@
+[submodule "submodule_stockPrice"]
+	path = submodule_stockPrice
+	url = https://github.com/don-t-worry/submodule_stockPrice.git
