@@ -26,13 +26,6 @@ set(YAML_CPP_BUILD_CONTRIB OFF CACHE BOOL "disable yaml-cpp contrib" FORCE)
 set(YAML_CPP_INSTALL OFF CACHE BOOL "disable yaml-cpp install" FORCE)
 FetchContent_MakeAvailable(yaml-cpp)
 
-# Fetch websocketpp library
-FetchContent_Declare(
-  websocketpp
-  GIT_REPOSITORY https://github.com/zaphoyd/websocketpp.git
-  GIT_TAG master
-)
-FetchContent_MakeAvailable(websocketpp)
 
 FetchContent_Declare(
   asio
@@ -41,8 +34,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(asio)
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/hedge")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/arbitrage")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/util")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/api")
 
