@@ -1,4 +1,4 @@
-#include "StockCodes.h"
+#include "util/StockCodesManager.h"
 #include <fstream>
 #include <iostream>
 
@@ -6,6 +6,7 @@
 std::vector<std::string> StockCodesManager::stockCodes;
 
 std::vector<std::string>& StockCodesManager::getStockCodes() {
+    init();
     return stockCodes;
 }
 
@@ -27,5 +28,5 @@ void StockCodesManager::initializeFromFile(const std::string& filename) {
 }
 
 void StockCodesManager::init() {
-    initializeFromFile("../../../../stock_codes.txt");
+    initializeFromFile("../../unique_stock_codes.txt");
 }

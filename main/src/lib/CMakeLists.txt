@@ -34,6 +34,22 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(asio)
 
+FetchContent_Declare(
+    hiredis
+    GIT_REPOSITORY https://github.com/redis/hiredis.git
+    GIT_TAG v1.2.0
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(hiredis)
+
+FetchContent_Declare(
+    libevent
+    GIT_REPOSITORY https://github.com/libevent/libevent.git
+    GIT_TAG release-2.1.12-stable  # 또는 특정 태그나 커밋 해시
+)
+FetchContent_MakeAvailable(libevent)
+
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/util")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/api")
 

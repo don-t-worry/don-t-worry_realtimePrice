@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.11)
 
+# Default to Debug build type if not specified
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+endif()
+
 project(Dont_Worry
     LANGUAGES CXX
     VERSION 0.1
@@ -15,11 +20,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/lib")
 
-add_executable(dontworry "${CMAKE_SOURCE_DIR}/src/main.cpp")
+add_executable(dontworry_stockPrice "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 
-target_link_libraries(dontworry PRIVATE ${PROJECT_LIBS})
-target_compile_options(dontworry PRIVATE -Wall -Werror)
+target_link_libraries(dontworry_stockPrice PRIVATE ${PROJECT_LIBS})
+target_compile_options(dontworry_stockPrice PRIVATE -Wall -Werror)
 
 
 

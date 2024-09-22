@@ -1,15 +1,31 @@
 #pragma once
 
-#include "Request.h"
-#include <thread>
+#include "api/Request.h"
+#include <asio.hpp>
+#include <atomic>
+#include <mutex>
 
 class Runner{
 public:
-    virtual ~Runner();
+    ~Runner() = default;
     Runner();
 
-    run();
+    void run();
+
+    void processStocks(Request& req);
+    void allProcessStocks();
+
+    void processTokens();
 
 private:
-    Request[] request;
-}
+    std::vector<Request> re;
+    const int numRequests = 3;
+    const std::vector<std::string>& stockCodes;
+    asio::io_context ioContext;
+    asio::steady_timer timer{ioContext};
+
+    std::atomic<int> index=0;
+    int size;
+    std::mutex indexMutex;
+    
+};

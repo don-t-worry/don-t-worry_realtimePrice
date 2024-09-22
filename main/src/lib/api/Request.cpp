@@ -1,17 +1,19 @@
-#include "Request.h"
-#include "StockCodes.h"
+#include "api/Request.h"
+#include "util/StockCodesManager.h"
 #include <iostream>
-#include <yaml-cpp/yaml.h>
+// #include <yaml-cpp/yaml.h>
+// #include <util/Resources.h>
+
+#include <thread>
+
+const std::vector<std::string>& Request::stockCodes = StockCodesManager::getStockCodes();
+int Request::size = 0; 
 
 Request::Request(int num){
-    const char* configPath = CONFIG_YAML_PATH;
-            
-    YAML::Node config = YAML::LoadFile(configPath);
 
-    std::string account = std::to_string(num);
-
-    appkey = config["authorization"]["account"][account]["appkey"].as<std::string>(); 
-    secretkey = config["authorization"]["account"][account]["secretkey"].as<std::string>();
+    appkey = Resources::authorization[num].appkey;
+    secretkey = Resources::authorization[num].secretkey;
+    
     token = "";
     domain = "https://openapi.koreainvestment.com:9443";
 
@@ -23,8 +25,14 @@ Request::Request(int num){
     
     tokenBody["grant_type"] = "client_credentials";
     tokenBody["appkey"] = appkey;
-    tokenBody["appsecret"] = appsecret;
+    tokenBody["appsecret"] = secretkey;
+
+    size = stockCodes.size();
     
+}
+
+Request::~Request(){
+    redisConfig.stop();
 }
 
 void Request::getToken(){
@@ -45,12 +53,28 @@ void Request::getStockPrice(int startIndex, int endIndex){
     std::map<std::string, std::string> params;
 
     int count=1;
-    const std::vector<std::string>& stockCodes = StockCodesManager::getStockCodes();
-    for(int i=startIndex; i<=endIndex; i++){
+    
+    int index = startIndex-1;
+    for(int i=0; i<30; i++){
+        index = (index+1) % size;
+
         params["FID_COND_MRKT_DIV_CODE_"+ std::to_string(count)] = "J";
-        params["FID_INPUT_ISCD_"+std::to_string(count)] = stock_codes[i];
+        params["FID_INPUT_ISCD_"+std::to_string(count)] = stockCodes[index];
         count++;
     }
 
+    std::map<std::string,std::string> insertedCodes;
+
+
     nlohmann::json response = httpClient.doGet(domain+url,params, stockPriceHeader);
+
+    for(const auto& item : response["output"]){
+        std::string code = item["inter_shrn_iscd"];
+        std::string price = item["inter2_prpr"];
+
+        insertedCodes[code] = price;
+    }
+
+    redisConfig.insert(insertedCodes);
+
 }
