@@ -33,6 +33,7 @@ void Runner::processStocks(Request& req){
 
     const std::chrono::milliseconds interval(1000 / 20);
     while(SignalHandler::isRunning()){
+        std::cout << "Thread num : " << std::this_thread::get_id() << std::endl;
         try{
 
             int localIndex;
@@ -93,7 +94,7 @@ void Runner::allProcessStocks(){
 
 
 void Runner::processTokens(){
-    for(int i=0; i<3; i++){
+    for(int i=0; i<numRequests; i++){
         re[i].getToken();
     }
 }

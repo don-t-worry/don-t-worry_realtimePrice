@@ -19,7 +19,7 @@ public:
 
 private:
     std::vector<Request> re;
-    const int numRequests = 3;
+    const int numRequests = 4;
     const std::vector<std::string>& stockCodes;
     asio::io_context ioContext;
     asio::steady_timer timer{ioContext};

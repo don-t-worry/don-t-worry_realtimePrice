@@ -10,7 +10,7 @@ struct Authorization {
 
 class Resources{
 public:
-    static const int accountCount=3;
+    static const int accountCount=4;
     static Authorization authorization[accountCount];
     static int redisPort;
     static std::string redisHost;

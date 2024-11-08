@@ -44,6 +44,8 @@ void Request::getToken(){
     token = "Bearer " + response["access_token"].get<std::string>();
 
     stockPriceHeader["authorization"] = token;
+
+    std::cout<<"token: " << token << std::endl;
 }
 
 void Request::getStockPrice(int startIndex, int endIndex){
@@ -68,13 +70,17 @@ void Request::getStockPrice(int startIndex, int endIndex){
 
     nlohmann::json response = httpClient.doGet(domain+url,params, stockPriceHeader);
 
-    for(const auto& item : response["output"]){
-        std::string code = item["inter_shrn_iscd"];
-        std::string price = item["inter2_prpr"];
+    if(response.contains("output")){
+        for(const auto& item : response["output"]){
+            std::string code = item["inter_shrn_iscd"];
+            std::string price = item["inter2_prpr"];
 
-        insertedCodes[code] = price;
+            insertedCodes[code] = price;
+        }
+        redisConfig.insert(insertedCodes);
+    }else{
+        std::cout<<response<<std::endl;
     }
 
-    redisConfig.insert(insertedCodes);
 
 }
