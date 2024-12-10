@@ -31,9 +31,8 @@ void Runner::run(){
 
 void Runner::processStocks(Request& req){
 
-    const std::chrono::milliseconds interval(1000 / 20);
+    const std::chrono::milliseconds interval(1000 / 15);
     while(SignalHandler::isRunning()){
-        std::cout << "Thread num : " << std::this_thread::get_id() << std::endl;
         try{
 
             int localIndex;

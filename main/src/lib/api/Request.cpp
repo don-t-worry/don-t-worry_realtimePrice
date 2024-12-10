@@ -45,7 +45,6 @@ void Request::getToken(){
 
     stockPriceHeader["authorization"] = token;
 
-    std::cout<<"token: " << token << std::endl;
 }
 
 void Request::getStockPrice(int startIndex, int endIndex){
