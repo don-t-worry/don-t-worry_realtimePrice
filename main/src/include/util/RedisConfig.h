@@ -22,6 +22,7 @@ public:
 
     void startEventLoop();
 
+    static void redisCallback(redisAsyncContext *c, void *reply, void *privdata);
     struct event_base *base;
 
 private:
@@ -30,4 +31,7 @@ private:
     static int redisPort;
     static std::string redisHost;
     static std::string redisPassword;
+    
+    bool responseReceived = false;
+    static int index;
 };

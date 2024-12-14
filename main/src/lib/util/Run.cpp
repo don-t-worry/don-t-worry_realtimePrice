@@ -59,7 +59,8 @@ void Runner::processStocks(Request& req){
             auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
 
             if (elapsedTime < interval) {
-                std::this_thread::sleep_for(interval - elapsedTime);
+                // std::this_thread::sleep_for(interval - elapsedTime);
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000/20));   
             }
         
         } catch (const std::exception& e) {
