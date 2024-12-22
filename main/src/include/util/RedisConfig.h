@@ -33,5 +33,6 @@ private:
     static std::string redisPassword;
     
     bool responseReceived = false;
+    struct event *timeout_event = nullptr;
     static int index;
 };

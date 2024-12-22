@@ -94,7 +94,7 @@ void RedisConfig::insert(const std::map<std::string, std::string>& data){
     timeout.tv_usec = 0;
 
     // 타이머 콜백 설정
-    struct event *timeout_event = event_new(base, -1, EV_TIMEOUT,
+    timeout_event = event_new(base, -1, EV_TIMEOUT,
         [](evutil_socket_t fd, short event, void *arg) {
 
             RedisConfig* self = static_cast<RedisConfig*>(arg);
@@ -106,7 +106,11 @@ void RedisConfig::insert(const std::map<std::string, std::string>& data){
         },
         this
     );
-    event_add(timeout_event, &timeout);  // 타이머 시작
+
+    if (!event_pending(timeout_event, EV_TIMEOUT, NULL)) {
+        event_add(timeout_event, &timeout);
+    }  // 타이머 시작
+
     
     // Redis에 명령어 전송
     redisAsyncCommand(c, RedisConfig::redisCallback, this, command.c_str());
